@@ -1,0 +1,3 @@
+udp.balancer.port=2001
+tcp.connections.number=200
+gateway.tcp.port=2000
