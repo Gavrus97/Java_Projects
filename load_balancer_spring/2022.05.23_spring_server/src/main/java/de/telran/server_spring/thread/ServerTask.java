@@ -2,7 +2,6 @@ package de.telran.server_spring.thread;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

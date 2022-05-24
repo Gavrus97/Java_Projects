@@ -3,7 +3,6 @@ package de.telran.server_spring.thread;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -59,7 +58,5 @@ public class LoadSender {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 }
