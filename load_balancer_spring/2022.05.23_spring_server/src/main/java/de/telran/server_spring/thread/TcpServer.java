@@ -13,15 +13,17 @@ public class TcpServer {
 
     private final AtomicInteger loadCounter;
     private final int selfTcpPort;
+    private final ServerTask task;
 
 
     public TcpServer(AtomicInteger loadCounter,
-                     @Value("${server.tcp.inbound.port}") int selfTcpPort) {
+                     @Value("${server.tcp.inbound.port}") int selfTcpPort, ServerTask task) {
         this.loadCounter = loadCounter;
         this.selfTcpPort = selfTcpPort;
+        this.task = task;
     }
 
-    @Async("threadExecutor")
+    @Async("serverTaskExecutor")
     public void run() {
         System.out.println("tcpServer");
         try (ServerSocket serverSocket = new ServerSocket(selfTcpPort)) {
@@ -29,9 +31,7 @@ public class TcpServer {
             while (true) {
                 Socket socket = serverSocket.accept();
                 loadCounter.incrementAndGet();
-
-                ServerTask task = new ServerTask(socket, loadCounter);
-                task.run();
+                task.run(socket);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -3,11 +3,9 @@ package de.telran.server_spring.thread;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
@@ -32,11 +30,10 @@ public class LoadSender {
     }
 
     @Async("threadExecutor")
-    public void run() {
+    public void run() throws IOException, InterruptedException {
         System.out.println("LoadSender");
 
         try (DatagramSocket datagramSocket = new DatagramSocket()) {
-
             while (true) {
                 String data = selfTcpPort + ":" + loadCounter.get();
                 byte[] bytesOut = data.getBytes();
@@ -53,10 +50,6 @@ public class LoadSender {
 
                 Thread.sleep(updatePeriod);
             }
-        } catch (IOException e) {
-            throw new RuntimeException();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -12,17 +12,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class ServerTask {
 
-    private final Socket socket;
+
     private final AtomicInteger loadCounter;
 
-    public ServerTask(Socket socket, AtomicInteger loadCounter) {
-        this.socket = socket;
+    public ServerTask( AtomicInteger loadCounter) {
+
         this.loadCounter = loadCounter;
     }
 
 
     @Async("threadPoolExecutor")
-    public void run() {
+    public void run(Socket socket) throws IOException {
         try (
             PrintStream dataOut = new PrintStream(socket.getOutputStream());
             BufferedReader dataIn = new BufferedReader(new InputStreamReader(socket.getInputStream()))){;
@@ -33,8 +33,6 @@ public class ServerTask {
                 dataOut.println(response);
             }
             System.out.println("Socket closed");
-        } catch (IOException e) {
-            throw new RuntimeException();
         } finally {
             loadCounter.decrementAndGet();
         }
